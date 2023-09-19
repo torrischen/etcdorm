@@ -14,10 +14,8 @@ type Etcdb struct {
 	Error      error
 }
 
-func Open(host string) *Etcdb {
-	c, err := clientv3.New(clientv3.Config{
-		Endpoints: []string{host},
-	})
+func Open(config clientv3.Config) *Etcdb {
+	c, err := clientv3.New(config)
 	if err != nil {
 		panic(err)
 	}
