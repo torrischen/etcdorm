@@ -65,3 +65,15 @@ func drop() processor {
 		}
 	}
 }
+
+func grant() processor {
+	return func(db *Etcdb) {
+		stmt := db.Statement
+		resp, err := db.client.Lease.Grant(db.ctx, stmt.TTL)
+		if err != nil {
+			db.Error = err
+			return
+		}
+		stmt.LeaseID = int64(resp.ID)
+	}
+}

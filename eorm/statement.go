@@ -6,4 +6,6 @@ type Statement struct {
 	EntryList []Entry
 	OpOptions []clientv3.OpOption
 	Cond      string
+	LeaseID   int64
+	TTL       int64
 }

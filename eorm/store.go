@@ -63,6 +63,14 @@ func (etcdb *Etcdb) Cond(cond string) *Etcdb {
 	return tx
 }
 
+func (etcdb *Etcdb) TTL(ttl int64) *Etcdb {
+	tx := etcdb.getInstance()
+
+	tx.Statement.TTL = ttl
+
+	return tx
+}
+
 // finisher api
 
 func (etcdb *Etcdb) exec() {
@@ -124,4 +132,14 @@ func (etcdb *Etcdb) Drop() *Etcdb {
 	tx.exec()
 
 	return tx
+}
+
+func (etcdb *Etcdb) Grant() (int64, error) {
+	tx := etcdb.getInstance()
+
+	tx.processors = append(tx.processors, grant())
+
+	tx.exec()
+
+	return tx.Statement.LeaseID, tx.Error
 }
